@@ -1,0 +1,86 @@
+import os
+import csv
+from rename import switch
+def getfile(name):
+    fr=open(name,"r")#打开文件
+    return fr
+
+def readfile(fr):
+    ls=[]
+    for line in fr:#将目标文件的内容读取
+        line=line.replace("\n","")
+        ls.append(line.split(","))
+    return ls
+
+def divline(ls):
+    for i in range(len(ls)):#读取的内容进行分段
+        while '' in ls[i]:
+                ls[i].remove('')
+        for j in range(len(ls[i])):
+            #print(ls[i][j])
+            ls[i][j]=ls[i][j].split("，")
+    
+    return ls
+    
+
+def findloca(ls,lookfor):#找到goal目标内容在列表中的位置
+    for i in range(len(ls)):
+        for j in range(len(ls[i])):
+            try :
+                ls[i][j].index(lookfor)
+                print(i,j)
+                return i,j
+            except ValueError:
+                continue      
+    return i,j
+
+
+def rename(path): 
+    filelist = os.listdir(path) #该文件夹下的所有文件
+    count =1
+    for file in filelist: #遍历所有文件 包括文件夹
+        Olddir = os.path.join(path,file)#原来文件夹的路径
+        if os.path.isdir(Olddir):#如果是文件夹，则跳过
+            continue
+        filename = os.path.splitext(file)[0]  #文件名
+        filetype = ".csv"#os.path.splitext(file)[1]   文件扩展名
+        Newdir = os.path.join(path,"E{}".format(count)+filetype) #新的文件路径
+        try:
+            os.rename(Olddir,Newdir) #重命名
+            count += 1
+        except FileExistsError:
+            continue
+    return count
+
+def disp(x,ls,lookfor):#显示查找目标的相关参数
+    print(ls[7:9])
+    if lookfor in ['尺寸规格','悬架参数','制动系统/轮毂与转轴','人机工程',
+                   '车架','动力总成','动力传动','空气动力学套件','选填信息']:
+        n=switch(lookfor)
+        if n!=0:
+            for i in range(n+1):
+                print(ls[x+i])
+            return
+    else:
+        print(ls[x])
+    return
+    
+
+def main():
+    path=r'D:\python\新建文件夹' #input("输入路径：")#输入excel文件所在的路径
+                                #   ，可以在目标文件夹下直接复制
+    j=rename(path)
+    lookfor=input("输入寻找项:")
+    i=1
+    while i<j:
+        fr=getfile('D:/python/新建文件夹/E{}.csv'.format(i))
+        ls=readfile(fr)
+        lsd=divline(ls)
+        x,y=findloca(lsd,lookfor)
+        disp(x,lsd,lookfor)
+        #print(x,y)测试使用
+        i+=1
+    return
+
+main()
+

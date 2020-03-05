@@ -1,0 +1,55 @@
+def case1():
+    # 第一种情况执行的函数
+    i=15-10
+    return i
+
+def case2():                            # 第二种情况执行的函数
+    i=39-16
+    return i
+
+def case3():                            # 第三种情况执行的函数
+    i=47-40
+    return i
+
+def case4():                            # 第4种情况执行的函数
+    i=55-48
+    return i
+    
+def case5():                            # 第5种情况执行的函数
+    i=66-56
+    return i
+    
+def case6():                            # 第6种情况执行的函数
+    i=92-67
+    return i
+    
+def case7():                            # 第7种情况执行的函数
+    i=106-93
+    return i
+
+def case8():                            # 第8种情况执行的函数
+    i=112-107
+    return i
+    
+def case9():                          # case9下执行的函数
+    i=122-113
+    return i
+
+def default():                          # 默认情况下执行的函数
+    print("无此信息")
+    i=0
+    return 
+
+def switch(goal):# 获取选择
+    switc = {'尺寸规格':case1,
+             '悬架参数':case2,
+             '制动系统/轮毂与转轴':case3,
+             '人机工程':case4,
+             '车架':case5,
+             '动力总成':case6,
+             '动力传动':case7,
+             '空气动力学套件':case8,
+             '选填信息':case9,
+             }                # 注意此处不要加括号
+    i=switc.get(goal, default)()            # 执行对应的函数，如果没有就执行默认的函数
+    return i
